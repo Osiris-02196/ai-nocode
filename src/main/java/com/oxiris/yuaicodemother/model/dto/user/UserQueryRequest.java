@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.model.dto;
+package com.oxiris.yuaicodemother.model.dto.user;
 
 import com.oxiris.yuaicodemother.common.PageRequest;
 import lombok.Data;
