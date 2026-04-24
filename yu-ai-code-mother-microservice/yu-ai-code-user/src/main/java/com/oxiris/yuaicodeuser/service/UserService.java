@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.service;
+package com.oxiris.yuaicodeuser.service;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;

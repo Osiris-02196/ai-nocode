@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.mapper;
+package com.oxiris.yuaicodeuser.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.oxiris.yuaicodemother.model.entity.User;

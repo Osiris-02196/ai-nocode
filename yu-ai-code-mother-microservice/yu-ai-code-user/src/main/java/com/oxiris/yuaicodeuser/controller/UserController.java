@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.controller;
+package com.oxiris.yuaicodeuser.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.paginate.Page;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.oxiris.yuaicodemother.model.entity.User;
-import com.oxiris.yuaicodemother.service.UserService;
+import com.oxiris.yuaicodeuser.service.UserService;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

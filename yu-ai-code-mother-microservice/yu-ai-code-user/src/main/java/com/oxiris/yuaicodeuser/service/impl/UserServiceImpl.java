@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.service.impl;
+package com.oxiris.yuaicodeuser.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -8,11 +8,11 @@ import com.oxiris.yuaicodemother.exception.BusinessException;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
 import com.oxiris.yuaicodemother.model.dto.user.UserQueryRequest;
 import com.oxiris.yuaicodemother.model.entity.User;
-import com.oxiris.yuaicodemother.mapper.UserMapper;
+import com.oxiris.yuaicodeuser.mapper.UserMapper;
 import com.oxiris.yuaicodemother.model.enums.UserRoleEnum;
 import com.oxiris.yuaicodemother.model.vo.LoginUserVO;
 import com.oxiris.yuaicodemother.model.vo.UserVO;
-import com.oxiris.yuaicodemother.service.UserService;
+import com.oxiris.yuaicodeuser.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
