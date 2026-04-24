@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.config;
+package com.oxiris.yuaicodemother.ai.config;
 
 import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.community.store.memory.chat.redis.StoreType;

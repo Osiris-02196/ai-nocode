@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.config;
+package com.oxiris.yuaicodemother.ai.config;
 
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
