@@ -3,15 +3,15 @@ package com.oxiris.yuaicodemother.aop;
 import com.oxiris.yuaicodemother.annotation.AuthCheck;
 import com.oxiris.yuaicodemother.exception.BusinessException;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
+import com.oxiris.yuaicodemother.innerservice.InnerUserService;
 import com.oxiris.yuaicodemother.model.entity.User;
 import com.oxiris.yuaicodemother.model.enums.UserRoleEnum;
-import com.oxiris.yuaicodemother.model.vo.LoginUserVO;
-import com.oxiris.yuaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,7 +22,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class AuthInterceptor {
 
     @Resource
-    private UserService userService;
+    @Lazy
+    private InnerUserService userService;
 
     @Around("@annotation(authCheck)")
     public Object doInterceptor(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable{
@@ -30,7 +31,7 @@ public class AuthInterceptor {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         //当前登录用户
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = InnerUserService.getLoginUser(request);
         UserRoleEnum mustRoleEnum = UserRoleEnum.getEnumByValue(mustRole);
         //不需要权限，放行
         if (mustRoleEnum == null){

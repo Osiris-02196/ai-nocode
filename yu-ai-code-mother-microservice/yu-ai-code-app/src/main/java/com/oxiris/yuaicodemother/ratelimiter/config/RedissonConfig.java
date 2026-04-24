@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.ratelimter.config;
+package com.oxiris.yuaicodemother.ratelimiter.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

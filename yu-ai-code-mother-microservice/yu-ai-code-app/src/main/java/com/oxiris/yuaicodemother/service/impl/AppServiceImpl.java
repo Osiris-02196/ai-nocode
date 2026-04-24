@@ -16,6 +16,8 @@ import com.oxiris.yuaicodemother.core.handler.StreamHandlerExecutor;
 import com.oxiris.yuaicodemother.exception.BusinessException;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
 import com.oxiris.yuaicodemother.exception.ThrowUtils;
+import com.oxiris.yuaicodemother.innerservice.InnerScreenshotService;
+import com.oxiris.yuaicodemother.innerservice.InnerUserService;
 import com.oxiris.yuaicodemother.model.dto.app.AppAddRequest;
 import com.oxiris.yuaicodemother.model.dto.app.AppQueryRequest;
 import com.oxiris.yuaicodemother.model.entity.App;
@@ -25,14 +27,13 @@ import com.oxiris.yuaicodemother.model.enums.ChatHistoryMessageTypeEnum;
 import com.oxiris.yuaicodemother.model.enums.CodeGenTypeEnum;
 import com.oxiris.yuaicodemother.model.vo.AppVO;
 import com.oxiris.yuaicodemother.model.vo.UserVO;
-import com.oxiris.yuaicodemother.monitor.MonitorContext;
-import com.oxiris.yuaicodemother.monitor.MonitorContextHolder;
+//import com.oxiris.yuaicodemother.monitor.MonitorContext;
+//import com.oxiris.yuaicodemother.monitor.MonitorContextHolder;
 import com.oxiris.yuaicodemother.service.AppService;
 import com.oxiris.yuaicodemother.service.ChatHistoryService;
-import com.oxiris.yuaicodemother.service.ScreenshotService;
-import com.oxiris.yuaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -55,7 +56,8 @@ import java.util.stream.Collectors;
 public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppService {
 
     @Resource
-    private UserService userService;
+    @Lazy
+    private InnerUserService userService;
 
     @Resource
     private AiCodeGeneratorFacade aiCodeGeneratorFacade;
@@ -70,7 +72,8 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
     private VueProjectBuilder vueProjectBuilder;
 
     @Resource
-    private ScreenshotService screenshotService;
+    @Lazy
+    private InnerScreenshotService screenshotService;
 
     @Resource
     private AiCodeGenTypeRoutingServiceFactory aiCodeGenTypeRoutingServiceFactory;
@@ -96,20 +99,20 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         // 5. 通过校验后，添加用户消息到对话历史
         chatHistoryService.addChatMessage(appId, message, ChatHistoryMessageTypeEnum.USER.getValue(), loginUser.getId());
         // 6. 设置监控上下文
-        MonitorContextHolder.setContext(
-                MonitorContext.builder()
-                        .userId(loginUser.getId().toString())
-                        .appId(appId.toString())
-                        .build()
-        );
+//        MonitorContextHolder.setContext(
+//                MonitorContext.builder()
+//                        .userId(loginUser.getId().toString())
+//                        .appId(appId.toString())
+//                        .build()
+//        );
         // 7. 调用 AI 生成代码（流式）
         Flux<String> codeStream = aiCodeGeneratorFacade.generateAndSaveCodeStream(message, codeGenTypeEnum, appId);
         // 8. 收集 AI 响应内容并在完成后记录到对话历史
-        return streamHandlerExecutor.doExecute(codeStream, chatHistoryService, appId, loginUser, codeGenTypeEnum)
-                .doFinally(signalType -> {
-                    // 流结束时清理（无论成功/失败/取消）
-                    MonitorContextHolder.clearContext();
-                });
+        return streamHandlerExecutor.doExecute(codeStream, chatHistoryService, appId, loginUser, codeGenTypeEnum);
+//                .doFinally(signalType -> {
+//                    // 流结束时清理（无论成功/失败/取消）
+//                    MonitorContextHolder.clearContext();
+//                });
 
 //        StringBuilder aiResponseBuilder = new StringBuilder();
 //        return contentFlux
@@ -248,7 +251,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         Long userId = app.getUserId();
         if (userId != null) {
             User user = userService.getById(userId);
-            UserVO userVO = userService.getUserVo(user);
+            UserVO userVO = userService.getUserVO(user);
             appVO.setUser(userVO);
         }
         return appVO;
@@ -264,7 +267,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
                 .map(App::getUserId)
                 .collect(Collectors.toSet());
         Map<Long, UserVO> userVOMap = userService.listByIds(userIds).stream()
-                .collect(Collectors.toMap(User::getId, userService::getUserVo));
+                .collect(Collectors.toMap(User::getId, userService::getUserVO));
         return appList.stream().map(app -> {
             AppVO appVO = getAppVO(app);
             UserVO userVO = userVOMap.get(app.getUserId());

@@ -1,6 +1,6 @@
 package com.oxiris.yuaicodemother.ratelimiter.annotation;
 
-import com.oxiris.yuaicodemother.ratelimter.enums.RateLimitType;
+import com.oxiris.yuaicodemother.ratelimiter.enums.RateLimitType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

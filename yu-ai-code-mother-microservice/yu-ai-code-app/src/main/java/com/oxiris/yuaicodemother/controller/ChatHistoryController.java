@@ -8,18 +8,16 @@ import com.oxiris.yuaicodemother.common.ResultUtils;
 import com.oxiris.yuaicodemother.constant.UserConstant;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
 import com.oxiris.yuaicodemother.exception.ThrowUtils;
+import com.oxiris.yuaicodemother.innerservice.InnerUserService;
 import com.oxiris.yuaicodemother.model.dto.chathistory.ChatHistoryQueryRequest;
 import com.oxiris.yuaicodemother.model.entity.User;
-import com.oxiris.yuaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.oxiris.yuaicodemother.model.entity.ChatHistory;
 import com.oxiris.yuaicodemother.service.ChatHistoryService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 对话历史 控制层。
@@ -33,8 +31,6 @@ public class ChatHistoryController {
     @Resource
     private ChatHistoryService chatHistoryService;
 
-    @Resource
-    private UserService userService;
     /**
      * 分页查询某个应用的对话历史（游标查询）
      *
@@ -49,7 +45,7 @@ public class ChatHistoryController {
                                                               @RequestParam(defaultValue = "10") int pageSize,
                                                               @RequestParam(required = false) LocalDateTime lastCreateTime,
                                                               HttpServletRequest request) {
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = InnerUserService.getLoginUser(request);
         Page<ChatHistory> result = chatHistoryService.listAppChatHistoryByPage(appId, pageSize, lastCreateTime, loginUser);
         return ResultUtils.success(result);
     }

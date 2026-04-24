@@ -1,12 +1,10 @@
 package com.oxiris.yuaicodemother.core.saver;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.oxiris.yuaicodemother.constant.AppConstant;
 import com.oxiris.yuaicodemother.exception.BusinessException;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
-import com.oxiris.yuaicodemother.model.entity.App;
 import com.oxiris.yuaicodemother.model.enums.CodeGenTypeEnum;
 
 import java.io.File;

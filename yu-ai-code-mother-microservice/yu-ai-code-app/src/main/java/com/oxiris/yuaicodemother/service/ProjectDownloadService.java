@@ -1,6 +1,5 @@
 package com.oxiris.yuaicodemother.service;
 
-import com.oxiris.yuaicodemother.model.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface ProjectDownloadService {

@@ -1,4 +1,4 @@
-package com.oxiris.yuaicodemother.ratelimter.enums;
+package com.oxiris.yuaicodemother.ratelimiter.enums;
 
 public enum RateLimitType {
     

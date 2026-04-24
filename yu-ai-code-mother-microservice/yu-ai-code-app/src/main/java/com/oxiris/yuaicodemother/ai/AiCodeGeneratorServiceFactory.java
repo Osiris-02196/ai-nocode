@@ -8,6 +8,7 @@ import com.oxiris.yuaicodemother.exception.BusinessException;
 import com.oxiris.yuaicodemother.exception.ErrorCode;
 import com.oxiris.yuaicodemother.model.enums.CodeGenTypeEnum;
 import com.oxiris.yuaicodemother.service.ChatHistoryService;
+import com.oxiris.yuaicodemother.utils.SpringContextUtil;
 import dev.langchain4j.community.store.memory.chat.redis.RedisChatMemoryStore;
 import dev.langchain4j.data.message.ToolExecutionResultMessage;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
