@@ -34,6 +34,9 @@ public class AiModelMonitorListener implements ChatModelListener {
         requestContext.attributes().put(REQUEST_START_TIME_KEY, Instant.now());
         // 从监控上下文中获取信息
         MonitorContext context = MonitorContextHolder.getContext();
+        if (context == null) {
+            return;
+        }
         String userId = context.getUserId();
         String appId = context.getAppId();
         requestContext.attributes().put(MONITOR_CONTEXT_KEY, context);
@@ -47,8 +50,10 @@ public class AiModelMonitorListener implements ChatModelListener {
     public void onResponse(ChatModelResponseContext responseContext) {
         // 从属性中获取监控信息（由 onRequest 方法存储）
         Map<Object, Object> attributes = responseContext.attributes();
-        // 从监控上下文中获取信息
         MonitorContext context = (MonitorContext) attributes.get(MONITOR_CONTEXT_KEY);
+        if (context == null) {
+            return;
+        }
         String userId = context.getUserId();
         String appId = context.getAppId();
         // 获取模型名称
@@ -63,8 +68,15 @@ public class AiModelMonitorListener implements ChatModelListener {
 
     @Override
     public void onError(ChatModelErrorContext errorContext) {
-        // 从监控上下文中获取信息
-        MonitorContext context = MonitorContextHolder.getContext();
+        // 优先从属性中获取监控上下文（由 onRequest 存储）
+        MonitorContext context = (MonitorContext) errorContext.attributes().get(MONITOR_CONTEXT_KEY);
+        if (context == null) {
+            // 兜底：从当前线程获取
+            context = MonitorContextHolder.getContext();
+            if (context == null) {
+                return;
+            }
+        }
         String userId = context.getUserId();
         String appId = context.getAppId();
         // 获取模型名称和错误类型
