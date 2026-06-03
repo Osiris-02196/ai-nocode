@@ -39,30 +39,33 @@
 ### 微服务架构（`main` 分支）
 
 ```mermaid
-graph TD
+graph LR
 
-    FE[yu-code-mother-frontend<br/>Vue3 + Ant Design Vue4]
+    subgraph Frontend
+        FE[Vue3 Frontend]
+    end
 
-    USER[yu-ai-code-user<br/>用户服务<br/>登录 注册 CRUD]
-    APP[yu-ai-code-app<br/>应用服务<br/>App Chat CRUD<br/>AI代码生成编排]
+    subgraph Services
+        USER[User Service]
+        APP[App Service]
+        AI[AI Service]
+        SS[Screenshot Service]
+    end
 
-    AI[yu-ai-code-ai<br/>AI服务<br/>代码生成<br/>提示词防护]
-    SCREENSHOT[yu-ai-code-screenshot<br/>截图服务<br/>Selenium截图]
-
-    NACOS[Nacos<br/>注册中心<br/>8848]
+    subgraph Infrastructure
+        NACOS[Nacos]
+    end
 
     FE --> USER
     FE --> APP
 
-    USER <--> APP
-
     APP --> AI
-    APP --> SCREENSHOT
+    APP --> SS
 
-    USER -.注册发现.-> NACOS
-    APP -.注册发现.-> NACOS
-    AI -.注册发现.-> NACOS
-    SCREENSHOT -.注册发现.-> NACOS
+    USER -.-> NACOS
+    APP -.-> NACOS
+    AI -.-> NACOS
+    SS -.-> NACOS
 ```
 
 ### 共享模块
