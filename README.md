@@ -155,10 +155,10 @@ sh startup.sh -m standalone
 ### 4. 配置密钥
 
 各服务的 `application.yml` 中已预留配置占位，需填入：
-- DeepSeek / Qwen API Key（AI 服务）
-- 腾讯云 COS SecretId / SecretKey（公共模块）
-- Pexels API Key
-- DashScope API Key
+- DeepSeek / 你的密钥（AI 服务）
+- 腾讯云 你的密钥（公共模块）
+- Pexels 你的密钥
+- DashScope 你的密钥
 
 ### 5. 启动微服务
 
