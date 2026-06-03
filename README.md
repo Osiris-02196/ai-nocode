@@ -1,14 +1,22 @@
-# yu-ai-code-mother 🤖
+# 零代码应用生成平台 🤖
 
 > **零代码应用生成平台** — 用自然语言描述你的应用想法，AI 自动生成可运行的应用程序。
 
 用户只需用中文描述想要的应用（如"帮我做一个个人博客网站"），平台通过 AI 自动完成：需求分析 → 代码类型路由 → AI 代码生成 → 解析保存 → 项目构建，最终生成可直接部署的 HTML 页面、多文件项目或完整的 Vue 项目。
 
-<p align="center">
-  <img src="assets/screenshots/homepage.png" alt="首页" width="45%" />
-  <img src="assets/screenshots/ai-chat.png" alt="AI 对话" width="45%" />
-  <img src="assets/screenshots/myworks.png" alt="作品管理" width="45%" />
-</p>
+## 🖥️ 界面截图
+
+### 🏠 首页
+
+<img src="assets/screenshots/homepage.png" width="80%" />
+
+### 🤖 AI 对话生成
+
+<img src="assets/screenshots/ai-chat.png" width="80%" />
+
+### 📁 作品管理
+
+<img src="assets/screenshots/myworks.png" width="80%" />
 
 ---
 
@@ -26,38 +34,35 @@
 
 ---
 
-## 架构 🏗️
+## 🏗️ 架构
 
 ### 微服务架构（`main` 分支）
 
-项目采用 **Spring Cloud Alibaba + Apache Dubbo + Nacos** 微服务架构，共拆分为 5 个独立服务：
+```mermaid
+graph TD
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    yu-code-mother-frontend                │
-│                  Vue 3 + Ant Design Vue 4                 │
-└──────────┬──────────────────────────────────┬────────────┘
-           │ HTTP (API)                       │ HTTP (API)
-           ▼                                  ▼
-┌──────────────────┐            ┌──────────────────────────┐
-│  yu-ai-code-user  │  Dubbo    │   yu-ai-code-app          │
-│  用户服务 :8124    │◄────────►│   应用服务 :8125           │
-│  登录/注册/CRUD   │  RPC      │   App/Chat CRUD           │
-└──────────────────┘           │   AI 代码生成编排         │
-                               │   代码解析/保存            │
-                               │   Vue 项目构建             │
-                               │   下载/部署                │
-                               └──────────┬───────────────┘
-                                          │ Dubbo RPC
-                      ┌───────────────────┼───────────────────┐
-                      ▼                   ▼                   ▼
-           ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
-           │  yu-ai-code-ai    │ │yu-ai-code-        │ │   Nacos          │
-           │  AI 服务          │ │screenshot         │ │  注册中心 :8848   │
-           │  代码生成          │ │截图服务           │ └──────────────────┘
-           │  类型路由          │ │Selenium 网页截图  │
-           │  提示词防护        │ └──────────────────┘
-           └──────────────────┘
+    FE[yu-code-mother-frontend<br/>Vue3 + Ant Design Vue4]
+
+    USER[yu-ai-code-user<br/>用户服务<br/>登录 注册 CRUD]
+    APP[yu-ai-code-app<br/>应用服务<br/>App Chat CRUD<br/>AI代码生成编排]
+
+    AI[yu-ai-code-ai<br/>AI服务<br/>代码生成<br/>提示词防护]
+    SCREENSHOT[yu-ai-code-screenshot<br/>截图服务<br/>Selenium截图]
+
+    NACOS[Nacos<br/>注册中心<br/>8848]
+
+    FE --> USER
+    FE --> APP
+
+    USER <--> APP
+
+    APP --> AI
+    APP --> SCREENSHOT
+
+    USER -.注册发现.-> NACOS
+    APP -.注册发现.-> NACOS
+    AI -.注册发现.-> NACOS
+    SCREENSHOT -.注册发现.-> NACOS
 ```
 
 ### 共享模块
